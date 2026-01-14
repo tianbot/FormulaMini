@@ -4,7 +4,7 @@ theme: TsinghuaPPT
 paginate: true
 ---
 
-<!-- backgroundImage: url("./docs/images/title.png") -->
+<!-- backgroundImage: url("../images/title.png") -->
 
 # 🏎️ Tianracer Formula Mini 开源指南
 
@@ -36,20 +36,6 @@ Powered by [Tianbot](https://www.tianbot.com/)
 
 ---
 
-## 📚 教学文档索引
-
-本项目提供了一套详尽的进阶教程，引导你从零开始掌握自动驾驶：
-
-1. [项目背景与介绍](docs/1.index.md) - 了解 Formula Mini 的前世今生。
-2. [快速上手指南](docs/2.quick_usage.md) - 5 分钟让小车动起来。
-3. [远程连接与配置](docs/3.reconnect_and_software_env_config.md) - 掌握 SSH 与 RustDesk 远程桌面。
-4. [Linux 与 ROS 基础](docs/4.linux_ros_basic.md) - 专为初高中生设计的实战课。
-5. [ROS 核心功能体验](docs/5.ros-basic-feature.md) - 玩转传雷达、相机与底盘。
-6. [SLAM 地图构建](docs/6.slam.md) - 让机器人认识这个世界。
-7. [自主导航实战](docs/7.navigation.md) - 实现从 A 到 B 的智能规划。
-8. [系统备份与扩容](docs/8.image_flash_backup.md) - 保护你的开发成果。
-
----
 
 ## 🚀 快速启动
 
@@ -131,4 +117,4 @@ roslaunch tianracer_core tianracer_core.launch
 # 🏁 开始你的自动驾驶之旅吧！
 
 ---
-![bg opacity:.1](./docs/images/thanks.png)
+![bg opacity:.1](../images/thanks.png)

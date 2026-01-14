@@ -3,7 +3,8 @@ marp: true
 theme: TsinghuaPPT
 paginate: true
 ---
-<!-- backgroundImage: url("./images/title.png") -->
+<!-- backgroundImage: url("../images/title.png") -->
+
 # Marp 教学 PPT 写作规范文档
 
 **面向人群**：高中生教学场景  
@@ -40,6 +41,17 @@ marp: true
 theme: default
 paginate: true
 ---
+
+<style>
+img {
+  width: 60%; 
+  height: auto; 
+  display: block;
+  margin: 0 auto;
+}
+</style>
+
+<!-- backgroundImage: url("../images/title.png") -->
 ```
 
 ### 可选配置项
@@ -197,7 +209,7 @@ SSH 通过在网络中创建安全隧道来实现 SSH 客户端与
 ```markdown
 ## 系统架构
 
-![width:600px](./images/architecture.png)
+![width:600px](../images/architecture.png)
 
 **说明**：上图展示了 ROS 的三层架构
 
@@ -207,7 +219,7 @@ SSH 通过在网络中创建安全隧道来实现 SSH 客户端与
 #### 方式 2：背景图片（全屏）
 
 ```markdown
-![bg](./images/background.jpg)
+![bg](../images/background.jpg)
 
 ---
 ```
@@ -235,7 +247,7 @@ SSH 通过在网络中创建安全隧道来实现 SSH 客户端与
 **图片后必须分页：**
 
 ```markdown
-![width:700px](./images/demo.png)
+![width:700px](../images/demo.png)
 
 这是对图片的简短说明。
 
@@ -603,7 +615,7 @@ mv file.txt /home/        # 移动文件
 
 ## 文件操作流程图
 
-![width:700px](./images/file-operations.png)
+![width:700px](../images/file-operations.png)
 
 **说明**：上图展示了文件从创建到删除的完整流程
 
@@ -659,9 +671,6 @@ cd ..
 <!-- _footer: ■ 课后请完成练习册第1-5题 -->
 
 ---
-
-<!-- backgroundColor: #4CAF50 -->
-<!-- color: white -->
 
 # 感谢学习！
 
