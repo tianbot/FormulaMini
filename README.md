@@ -64,7 +64,7 @@ roslaunch tianracer_core tianracer_core.launch
 ### 如何高效工作？
 1. **安装插件**：在插件市场搜索并安装 `Marp for VS Code`。
 2. **实时预览**：点击编辑器右上角的 **Marp 图标** (或按 `Ctrl + Shift + V`)，即可实时看到幻灯片效果。
-3. **导出 PDF**：除了插件自带的导出功能，我们推荐使用下文提到的 `export_docs.ps1` 脚本进行批量导出。
+3. **导出 PDF**：除了插件自带的导出功能，我们推荐使用下文提到的 `export_docs` 脚本进行批量导出。
 
 > ⚠️ **重要提示**：为避免 Windows 环境下的中文乱码，编写时请务必确保文件编码为 **UTF-8 with BOM** (utf-8-sig) 格式。
 
@@ -84,7 +84,7 @@ roslaunch tianracer_core tianracer_core.launch
 
 为了方便教学演示与分发，项目提供了一键式的 PDF 导出脚本（支持一键导出 `docs/` 下所有教程）：
 
-### 如何使用 (Windows PowerShell)
+### 如何使用 (Windows/PowerShell)
 1. **导出全量文档**：
    ```powershell
    .\export_docs.ps1
@@ -94,9 +94,20 @@ roslaunch tianracer_core tianracer_core.launch
    .\export_docs.ps1 -File "4.linux_ros_basic.md"
    ```
 
+### 如何使用 (Linux/Ubuntu Bash)
+1. **导出全量文档**：
+   ```bash
+   ./export_docs.sh
+   ```
+2. **导出单个指定文档**：
+   ```bash
+   ./export_docs.sh 4.linux_ros_basic.md
+   ```
+
 > 💡 **小助手提示**：
 > - 脚本会自动调用 `npx @marp-team/marp-cli`，只需你的电脑安装了 [Node.js](https://nodejs.org/) 即可运行。
 > - 导出的 PDF 文件将统一保存在根目录的 `export_pdf/` 文件夹中。
+> - 运行脚本前，请确保在项目根目录下操作。
 
 ---
 
