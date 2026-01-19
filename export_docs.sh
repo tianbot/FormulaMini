@@ -97,7 +97,8 @@ export_marp_file() {
     
     # 使用 npx 运行 marp-cli
     # --allow-local-files 允许加载本地图片
-    if npx @marp-team/marp-cli@latest "$file_path" --pdf --allow-local-files -o "$out_file" 2>&1; then
+    # --theme-set 指定主题目录，--theme 指定具体主题名
+    if npx @marp-team/marp-cli@latest "$file_path" --pdf --allow-local-files --theme-set themes --theme tsinghuappt --html -o "$out_file" 2>&1; then
         echo -e "${GREEN}成功导出至: $out_file${NC}"
         return 0
     else

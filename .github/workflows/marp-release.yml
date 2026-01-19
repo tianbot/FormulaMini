@@ -1,0 +1,115 @@
+name: Build and Release docs PDFs
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Marp CLI
+        run: npm install -g @marp-team/marp-cli
+
+      - name: Build PDFs from docs/*.md
+        run: |
+          mkdir -p out
+          shopt -s nullglob
+          for f in docs/*.md; do
+            base=$(basename "$f" .md)
+            echo "Rendering $f -> out/${base}.pdf"
+            # 使用 --theme-set 指定主题目录，--theme 指定具体主题名
+            # PDF 目录大纲默认由 headings 生成
+            marp "$f" --theme-set themes --theme tsinghuappt --html -o "out/${base}.pdf" --pdf || exit 1
+          done
+        shell: bash
+
+      - name: Build HTML for Pages
+        run: |
+          mkdir -p pages-site
+          # 复制图片 assets 和自定义主题 CSS
+          [ -d docs/assets ] && cp -r docs/assets pages-site/
+          mkdir -p pages-site/themes
+          cp themes/tsinghuappt.css pages-site/themes/
+          shopt -s nullglob
+          for f in docs/*.md; do
+            base=$(basename "$f" .md)
+            echo "Rendering $f -> pages-site/${base}.html"
+            # 网页版也强制注入主题
+            marp "$f" --theme-set themes --theme tsinghuappt --html -o "pages-site/${base}.html" || exit 1
+          done
+          # 生成美化版的索引页
+          cat <<EOF > pages-site/index.html
+          <!DOCTYPE html>
+          <html lang="zh-CN">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Formula Mini 文档库</title>
+              <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 0 20px; background-color: #f8f9fa; }
+                  h1 { color: #003366; border-bottom: 2px solid #003366; padding-bottom: 10px; text-align: center; }
+                  .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+                  ul { list-style: none; padding: 0; }
+                  li { margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+                  li:last-child { border-bottom: none; }
+                  a { text-decoration: none; color: #0056b3; font-size: 1.1em; transition: color 0.2s; display: flex; align-items: center; }
+                  a:hover { color: #003366; }
+                  a::before { content: '📄'; margin-right: 10px; }
+                  .footer { text-align: center; margin-top: 40px; color: #666; font-size: 0.9em; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>🏎️ Formula Mini 教程合集</h1>
+                  <ul>
+          EOF
+          
+          # 使用 natural sort (ls -v) 确保 10 在 2 后面
+          for f in $(ls -v pages-site/*.html); do
+            [ "$(basename "$f")" == "index.html" ] && continue
+            filename=$(basename "$f")
+            # 移除 .html 后缀，并将下划线/连字符替换为空格，提取标题
+            # 尝试提取第一个匹配的标题（如果文件名以数字开头，保留数字作为序号）
+            display_name=$(echo "$filename" | sed 's/\.html//' | sed 's/[-_]/ /g')
+            echo "<li><a href=\"$filename\">$display_name</a></li>" >> pages-site/index.html
+          done
+          
+          cat <<EOF >> pages-site/index.html
+                  </ul>
+              </div>
+              <div class="footer">
+                  <p>Powered by Marp & GitHub Actions<br>Tianbot © 2026</p>
+              </div>
+          </body>
+          </html>
+          EOF
+        shell: bash
+
+      - name: Create Release and upload PDFs
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: docs-${{ github.run_number }}
+          files: out/*.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pages-site
+          publish_branch: gh-pages
+

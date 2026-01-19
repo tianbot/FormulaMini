@@ -99,6 +99,22 @@ roslaunch tianracer_core tianracer_core.launch
    ```bash
    ./export_docs.sh
    ```
+
+### 自动化发布 (GitHub Actions)
+项目已配置 **GitHub Actions**。每次推送到 `main` 分支时，系统会自动将 `docs/` 下的所有 Markdown 转换为 PDF，并发布到 GitHub 仓库的 **Releases** 页面。
+- **发布内容**：所有教程的 PDF 版本。
+- **PDF 参数**：已自动包含 PDF 目录书签（Bookmarks）、自定义主题（TsinghuaPPT）以及分页功能。
+
+### 本地构建与预览 (GitHub Pages 风格)
+如果你想在本地模拟 GitHub Pages 的预览效果（网页版幻灯片集合），可以运行以下命令：
+```bash
+# 安装依赖
+npm install -g @marp-team/marp-cli
+# 启动本地服务器预览整个文档库
+npx @marp-team/marp-cli -s docs --theme-set themes
+```
+执行后访问 `http://localhost:8080`，你可以实时看到 `docs/` 下的所有文档并进行交互预览。
+   ```
 2. **导出单个指定文档**：
    ```bash
    ./export_docs.sh 4.linux_ros_basic.md
