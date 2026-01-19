@@ -35,25 +35,25 @@ jobs:
           for f in docs/*.md; do
             base=$(basename "$f" .md)
             echo "Rendering $f -> out/${base}.pdf"
-            # 使用 --theme-set 指定主题目录，--theme 指定具体主题名
-            # PDF 目录大纲默认由 headings 生成
-            marp "$f" --theme-set themes --theme tsinghuappt --html -o "out/${base}.pdf" --pdf || exit 1
+            # 使用 --allow-local-files 允许本地图片访问
+            marp "$f" --theme-set themes --theme tsinghuappt --html --allow-local-files -o "out/${base}.pdf" --pdf || exit 1
           done
         shell: bash
 
       - name: Build HTML for Pages
         run: |
-          mkdir -p pages-site
-          # 复制图片 assets 和自定义主题 CSS
-          [ -d docs/assets ] && cp -r docs/assets pages-site/
-          mkdir -p pages-site/themes
-          cp themes/tsinghuappt.css pages-site/themes/
+          mkdir -p pages-site/docs
+          # 复制内部 assets、全局 images 文件夹 和 themes 文件夹
+          [ -d docs/assets ] && cp -r docs/assets pages-site/docs/
+          [ -d images ] && cp -r images pages-site/
+          [ -d themes ] && cp -r themes pages-site/
+          
           shopt -s nullglob
           for f in docs/*.md; do
             base=$(basename "$f" .md)
-            echo "Rendering $f -> pages-site/${base}.html"
-            # 网页版也强制注入主题
-            marp "$f" --theme-set themes --theme tsinghuappt --html -o "pages-site/${base}.html" || exit 1
+            echo "Rendering $f -> pages-site/docs/${base}.html"
+            # 允许本地文件访问以渲染图片和主题
+            marp "$f" --theme-set themes --theme tsinghuappt --html --allow-local-files -o "pages-site/docs/${base}.html" || exit 1
           done
           # 生成美化版的索引页
           cat <<EOF > pages-site/index.html
@@ -83,13 +83,10 @@ jobs:
           EOF
           
           # 使用 natural sort (ls -v) 确保 10 在 2 后面
-          for f in $(ls -v pages-site/*.html); do
-            [ "$(basename "$f")" == "index.html" ] && continue
+          for f in $(ls -v pages-site/docs/*.html); do
             filename=$(basename "$f")
-            # 移除 .html 后缀，并将下划线/连字符替换为空格，提取标题
-            # 尝试提取第一个匹配的标题（如果文件名以数字开头，保留数字作为序号）
             display_name=$(echo "$filename" | sed 's/\.html//' | sed 's/[-_]/ /g')
-            echo "<li><a href=\"$filename\">$display_name</a></li>" >> pages-site/index.html
+            echo "<li><a href=\"docs/$filename\">$display_name</a></li>" >> pages-site/index.html
           done
           
           cat <<EOF >> pages-site/index.html
