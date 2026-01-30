@@ -106,6 +106,10 @@ drive_msg.drive.speed = speed
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-background-image="url(&quot;../images/title.png&quot;)" data-theme="TsinghuaPPT" lang="C" data-marpit-pagination="9" style="--paginate:true;--background-image:url(&quot;../images/title.png&quot;);--theme:TsinghuaPPT;background-image:url(&quot;../images/title.png&quot;);background-position:center;background-repeat:no-repeat;background-size:cover;" data-marpit-pagination-total="16">
 <h1 id="3-%E8%BF%90%E8%A1%8C%E4%B8%8E%E6%93%8D%E4%BD%9C">3 运行与操作</h1>
 <h2 id="31-%E8%BF%90%E8%A1%8C%E6%96%B9%E6%B3%95">3.1 运行方法</h2>
+<p>首先，我们需要通过 SSH 登录赛车，并启动它的底盘和感官。</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-comment"># 在赛车终端输入</span>
+roslaunch tianracer_bringup tianracer_bringup.launch
+</code></pre>
 <p>启动巡墙控制节点及其仿真/驱动环境：</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-bash"><span class="hljs-comment"># 启动巡墙完整环境</span>
 roslaunch tianracer_navigation wall_following.launch
